@@ -1,6 +1,9 @@
 import pyodbc as sql
 from mensaje import Mensaje
 from datetime import datetime
+'''
+Salvador Ortega
+'''
 cadena_conexion = "DRIVER={ODBC Driver 17 for SQL Server};SERVER=DESKTOP-9NIFOJB;DATABASE=chat;Trusted_Connection=yes;"
 id = None
 usuario = ''
