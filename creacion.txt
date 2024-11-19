@@ -1,0 +1,69 @@
+-- Crear la tabla Usuarios
+CREATE TABLE Usuarios (
+    Id INT IDENTITY(1,1) PRIMARY KEY,        -- Identificador único del usuario
+    Nombre NVARCHAR(255) NOT NULL,          -- Nombre completo del usuario
+    Username NVARCHAR(50) UNIQUE NOT NULL,  -- Nombre de usuario único
+    Email NVARCHAR(255) UNIQUE NOT NULL,    -- Correo electrónico único
+    Contraseña NVARCHAR(255) NOT NULL,      -- Contraseña (almacenada como hash)
+    FechaRegistro DATETIME DEFAULT GETDATE() -- Fecha de registro
+);
+
+-- Crear la tabla Mensajes
+CREATE TABLE Mensajes (
+    Id INT IDENTITY(1,1) PRIMARY KEY,       -- Identificador único del mensaje
+    EmisorId INT NOT NULL,                  -- ID del usuario que envía el mensaje
+    ReceptorId INT NOT NULL,                -- ID del usuario que recibe el mensaje
+    Contenido NVARCHAR(255) NOT NULL,       -- Contenido del mensaje
+    FechaEnvio DATETIME DEFAULT GETDATE(),  -- Fecha y hora del envío
+    CONSTRAINT FK_Mensajes_Emisor FOREIGN KEY (EmisorId) REFERENCES Usuarios(Id), -- Relación con Usuarios
+    CONSTRAINT FK_Mensajes_Receptor FOREIGN KEY (ReceptorId) REFERENCES Usuarios(Id) -- Relación con Usuarios
+);
+
+-- Insertar datos en la tabla Usuarios
+INSERT INTO Usuarios (Nombre, Username, Email, Contraseña) 
+VALUES 
+('Salvador Ortega', 'sortega', 'salvador.ortega@example.com', '12345'),
+('María López', 'marial', 'maria.lopez@example.com', '67890'),
+('Carlos García', 'carlosg', 'carlos.garcia@example.com', '54321'),
+('Ana Martínez', 'anam', 'ana.martinez@example.com', '11111'),
+('Pedro Rodríguez', 'pedror', 'pedro.rodriguez@example.com', '99999'),
+('Lucía Fernández', 'luciaf', 'lucia.fernandez@example.com', '22222');
+
+-- Insertar datos en la tabla Mensajes
+INSERT INTO Mensajes (EmisorId, ReceptorId, Contenido) VALUES 
+-- Chat entre Salvador (1) y María (2)
+(1, 2, 'Hola María, ¿cómo estás?'), 
+(2, 1, 'Hola Salvador, todo bien. ¿Y tú?'),
+(1, 2, 'Muy bien, gracias. ¿Qué planes tienes para el fin de semana?'),
+(2, 1, 'Nada especial, tal vez salir a caminar. ¿Y tú?'),
+(1, 2, 'Estoy pensando en ir al cine, ¿te gustaría venir?'),
+(2, 1, '¡Claro que sí! ¿A qué hora?'),
+(1, 2, 'Podemos ir a las 7 pm. Te paso los detalles luego.'),
+
+-- Chat entre Salvador (1) y Carlos (3)
+(1, 3, 'Hola Carlos, ¿puedes ayudarme con un proyecto?'),
+(3, 1, 'Claro Salvador, ¿de qué trata?'),
+(1, 3, 'Es una aplicación de chat, necesito ideas para optimizar la base de datos.'),
+(3, 1, 'Perfecto, déjame revisar algunas opciones y te aviso.'),
+(1, 3, 'Gracias, Carlos. Estaré esperando.'),
+
+-- Chat entre María (2) y Ana (4)
+(2, 4, 'Hola Ana, ¿puedes revisar el reporte que te envié?'),
+(4, 2, 'Por supuesto María, lo reviso en un momento.'),
+(2, 4, 'Gracias, necesito saber si los gráficos están claros.'),
+(4, 2, 'Ya lo revisé, los gráficos están bien, pero la conclusión podría ser más clara.'),
+(2, 4, 'Entendido, haré los ajustes necesarios. ¡Gracias por tu ayuda!'),
+
+-- Chat entre Pedro (5) y Lucía (6)
+(5, 6, 'Lucía, ¿cuándo tendremos la reunión con el equipo?'),
+(6, 5, 'Pedro, la reunión será el lunes a las 10 am.'),
+(5, 6, 'Perfecto, ¿puedes enviarme la agenda?'),
+(6, 5, 'Claro, la envío en unos minutos.'),
+(5, 6, 'Gracias, Lucía. Nos vemos el lunes.'),
+
+-- Chat entre Salvador (1) y Pedro (5)
+(1, 5, 'Pedro, ¿te interesa participar en el proyecto nuevo?'),
+(5, 1, 'Gracias Salvador, sí me interesa. ¿Qué necesito hacer?'),
+(1, 5, 'Te enviaré los requisitos por correo. ¿Puedes revisarlos para mañana?'),
+(5, 1, 'Por supuesto, estaré atento a tu correo.'),
+(1, 5, 'Perfecto, gracias Pedro.');
